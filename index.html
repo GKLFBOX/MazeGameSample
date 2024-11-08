@@ -8,6 +8,17 @@
 </head>
 <body>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
+    
+    <!-- 移動用のボタンを追加 -->
+    <div class="controls">
+        <button onclick="movePlayer(0, -1)">↑</button>
+        <div class="horizontal-buttons">
+            <button onclick="movePlayer(-1, 0)">←</button>
+            <button onclick="movePlayer(1, 0)">→</button>
+        </div>
+        <button onclick="movePlayer(0, 1)">↓</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

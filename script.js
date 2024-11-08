@@ -41,6 +41,7 @@ function drawPlayer() {
     ctx.fill();
 }
 
+// キャラクターを移動させる関数
 function movePlayer(dx, dy) {
     const newX = player.x + dx;
     const newY = player.y + dy;
@@ -51,23 +52,6 @@ function movePlayer(dx, dy) {
     drawMaze();
     drawPlayer();
 }
-
-document.addEventListener('keydown', (e) => {
-    switch (e.key) {
-        case 'ArrowUp':
-            movePlayer(0, -1);
-            break;
-        case 'ArrowDown':
-            movePlayer(0, 1);
-            break;
-        case 'ArrowLeft':
-            movePlayer(-1, 0);
-            break;
-        case 'ArrowRight':
-            movePlayer(1, 0);
-            break;
-    }
-});
 
 drawMaze();
 drawPlayer();
