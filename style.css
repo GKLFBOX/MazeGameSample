@@ -33,13 +33,15 @@ button {
     height: 60px;
     font-size: 24px;
     cursor: pointer;
-    display: inline-flex;
+    padding: 0;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    /* 四角形で統一 */
+    border-radius: 8px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 0;
-    line-height: 1;
-    border-radius: 0; /* 四角形に固定 */
+    transition: none; /* タッチ時に見た目が変化しないように */
 }
 
 /* iPhoneや小さい画面向けのレスポンシブ対応 */
