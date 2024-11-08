@@ -15,6 +15,7 @@ const maze = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 let player = { x: 1, y: 1 };
+const goal = { x: 8, y: 8 }; // ゴール地点の座標
 
 function drawMaze() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -41,7 +42,19 @@ function drawPlayer() {
     ctx.fill();
 }
 
-// キャラクターを移動させる関数
+function drawGoal() {
+    ctx.fillStyle = '#00ff00'; // ゴール地点は緑色で表示
+    ctx.beginPath();
+    ctx.arc(
+        goal.x * cellSize + cellSize / 2,
+        goal.y * cellSize + cellSize / 2,
+        cellSize / 4,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+}
+
 function movePlayer(dx, dy) {
     const newX = player.x + dx;
     const newY = player.y + dy;
@@ -50,8 +63,27 @@ function movePlayer(dx, dy) {
         player.y = newY;
     }
     drawMaze();
+    drawGoal();
+    drawPlayer();
+    checkGoal(); // 移動後にゴールのチェック
+}
+
+function checkGoal() {
+    if (player.x === goal.x && player.y === goal.y) {
+        setTimeout(() => {
+            alert('ゲームクリア！');
+            resetGame();
+        }, 100); // メッセージ表示後にゲームをリセット
+    }
+}
+
+function resetGame() {
+    player = { x: 1, y: 1 }; // プレイヤーの位置をリセット
+    drawMaze();
+    drawGoal();
     drawPlayer();
 }
 
 drawMaze();
+drawGoal();
 drawPlayer();
