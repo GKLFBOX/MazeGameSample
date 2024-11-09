@@ -19,6 +19,12 @@ function initializeGame() {
     drawPlayer(ctx, player, cellSize);
 }
 
+// ボタンにイベントリスナーを設定
+document.querySelector('.controls button:nth-child(1)').addEventListener('click', () => movePlayer(0, -1)); // 上
+document.querySelector('.horizontal-buttons button:nth-child(1)').addEventListener('click', () => movePlayer(-1, 0)); // 左
+document.querySelector('.horizontal-buttons button:nth-child(2)').addEventListener('click', () => movePlayer(1, 0)); // 右
+document.querySelector('.controls button:nth-child(3)').addEventListener('click', () => movePlayer(0, 1)); // 下
+
 function checkGoal() {
     if (player.x === goal.x && player.y === goal.y) {
         setTimeout(() => {
