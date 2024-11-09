@@ -2,20 +2,56 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 const cellSize = 40;
-const maze = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 1, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
-    [1, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-    [1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
-    [1, 0, 0, 1, 0, 0, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-];
-let player = { x: 1, y: 1 };
-const goal = { x: 8, y: 8 }; // ゴール地点の座標
+const rows = 10;
+const cols = 10;
+let maze;
+let player;
+let goal;
+
+function initializeGame() {
+    maze = generateMaze(rows, cols); // ランダムな迷路を生成
+    player = { x: 1, y: 1 }; // スタート位置を設定
+    goal = { x: cols - 2, y: rows - 2 }; // ゴール位置を設定
+    drawMaze();
+    drawGoal();
+    drawPlayer();
+}
+
+function generateMaze(rows, cols) {
+    // 初期化 - 壁で埋め尽くされた迷路
+    const maze = Array.from({ length: rows }, () => Array(cols).fill(1));
+
+    // 深さ優先探索で迷路を生成
+    function carve(x, y) {
+        const directions = [
+            [0, -2], [0, 2], [-2, 0], [2, 0]
+        ];
+        shuffleArray(directions); // ランダムな順序で探索
+
+        for (const [dx, dy] of directions) {
+            const nx = x + dx;
+            const ny = y + dy;
+            if (nx > 0 && ny > 0 && nx < cols - 1 && ny < rows - 1 && maze[ny][nx] === 1) {
+                maze[y + dy / 2][x + dx / 2] = 0; // 隣接するセルの間を通路にする
+                maze[ny][nx] = 0; // 新しいセルを通路にする
+                carve(nx, ny); // 再帰的に探索
+            }
+        }
+    }
+
+    // 開始位置
+    maze[1][1] = 0;
+    carve(1, 1); // 迷路生成の開始
+
+    return maze;
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
 function drawMaze() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -72,18 +108,10 @@ function checkGoal() {
     if (player.x === goal.x && player.y === goal.y) {
         setTimeout(() => {
             alert('ゲームクリア！');
-            resetGame();
-        }, 100); // メッセージ表示後にゲームをリセット
+            initializeGame(); // 新しい迷路を生成して再スタート
+        }, 100);
     }
 }
 
-function resetGame() {
-    player = { x: 1, y: 1 }; // プレイヤーの位置をリセット
-    drawMaze();
-    drawGoal();
-    drawPlayer();
-}
-
-drawMaze();
-drawGoal();
-drawPlayer();
+// ゲームを初期化して開始
+initializeGame();
